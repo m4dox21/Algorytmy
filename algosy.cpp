@@ -1,57 +1,49 @@
 #include <iostream>
+
+#include <stdlib.h>     /* srand, rand */
+
 using namespace std;
 
-int main()
+struct Legitymacje
 {
-    
-    // 1<=n<=3000000
-    // 0<=p<=k<=1000000 
-    
-    int size, value, option;
-    // int points_min, points_max;
-    cout<<"Podaj rozmiar";
-    cin>>size;
-    cout<<"Podaj opcje";
-    cin>>option;
-    int tab[size][2];
+    int l; //   id
+    int w; //   punkty
+};
 
-    for(int j=0;j<size;j++)
+
+int main()
+{   
+    int n, p, k, c;
+    // n - rozmiar tablicy
+    // p - dolna granica w
+    // k - górna granica w
+    // c - opcja
+    cin>>n>>p>>k>>c;
+    if (n >= 1 && n <= 3000000 )
     {
-        cin>>value;
-        tab[j][0] = value;
-        cin>>value;
-        tab[j][1] = value;
+        if(p >= 0 && p <= k && k <= 1000000)
+        {
+            {
+                Legitymacje Legitymacja[n]; 
+                for(int i=0;i<n;i++)
+                {
+                    Legitymacja[i].l =  rand() % 2000 + 1000;
+                    Legitymacja[i].w =  rand() % k + p;
+                }
+
+                for(int j=0;j<n;j++)
+                {
+                    if(c == 0)
+                    {
+                        cout<<Legitymacja[j].l<<" ";
+                    }
+                    else if(c == 1)
+                    {
+                        cout<<Legitymacja[j].w<<" ";
+                    }
+                }
+            }
+        }
     }
-
-
-    if(option == 0)
-        for(int k=0;k<size;k++)
-        {
-            cout<<tab[k][0]<<endl;
-        }
-    else if(option == 1)
-        for(int k=0;k<size;k++)
-        {
-            cout<<tab[k][1]<<" ";
-        }
-
-
-
-
-
-
-        // for(int k=0;k<size;k++)
-        // {
-        //     cout<<tab[k][0]<<" "<<tab[k][1]<<endl;
-        // }
-
-
-
-
-
-
-
-
-    
     return 0;
 }
