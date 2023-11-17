@@ -217,6 +217,32 @@ void Introsort(Legitymacje array[], int begin, int end)
     return;
 }
 
+// counting sort
+void countSort(Legitymacje inputArray[], int size, Legitymacje outputArray[])
+{
+    int M = 0;
+
+    for (int i = 0; i < size; i++)
+        M = std::max(M, inputArray[i].w);
+
+    int countArray[M + 1] = {0};
+
+    for (int i = 0; i < size; i++)
+        countArray[inputArray[i].w]++;
+
+    for (int i = 1; i <= M; i++)
+        countArray[i] += countArray[i - 1];
+
+    for (int i = size - 1; i >= 0; i--)
+    {
+        outputArray[countArray[inputArray[i].w] - 1] = inputArray[i];
+        countArray[inputArray[i].w]--;
+    }
+    // for (int i = 0; i < size; i++)
+    // {
+    //     cout << outputArray[i].w << " ";
+    // }
+}
 
 void wypisz(Legitymacje array[], int n, int c)
 {
@@ -236,6 +262,7 @@ void wypisz(Legitymacje array[], int n, int c)
 
 int main()
 {   
+    ios_base::sync_with_stdio(false);
     srand(time(NULL));
     int n, p, k, c;
     // n - rozmiar tablicy
@@ -244,6 +271,7 @@ int main()
     // c - opcja
     cin>>n>>p>>k>>c;
     Legitymacje Legitymacja[n]; 
+    Legitymacje outLegitymacja[n];
     if (n >= 1 && n <= 3000000 )
     {
         if(p >= 0 && p <= k && k <= 1000000)
@@ -252,14 +280,16 @@ int main()
                 for(int i=0;i<n;i++)
                 {
                     Legitymacja[i].l =  rand() % 2000 + 1000;
-                    Legitymacja[i].w =  rand() % k + p;
+                    Legitymacja[i].w =  rand() % (k - p + 1) + p;
                 }
 
                 wypisz(Legitymacja, n, c);
                 cout<<endl<<endl;
                 // Introsort(Legitymacja, 0, n); 
-                timSort(Legitymacja, n);
-                wypisz(Legitymacja, n, c);
+                // timSort(Legitymacja, n);
+                // wypisz(Legitymacja, n, c);
+                countSort(Legitymacja, n, outLegitymacja);
+                wypisz(outLegitymacja, n, c);
 
             }
         }
