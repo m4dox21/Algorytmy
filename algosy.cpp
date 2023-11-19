@@ -4,6 +4,9 @@
 #include <cmath>
 #include <algorithm>
 
+#include <fstream>
+#include <chrono>
+
 using namespace std;
 
 
@@ -20,7 +23,7 @@ struct Legitymacje
 };
 
 // timsort
-const int RUN = 3000000; 
+const int RUN = 4194304; 
 void insertionSort(Legitymacje array[], int left, int right)
 {
     for (int i = left + 1; i <= right; i++)
@@ -38,8 +41,8 @@ void insertionSort(Legitymacje array[], int left, int right)
 
 void merge(Legitymacje array[], int l, int m, int r)
 {
-    int len1 = m - 1;
-    int len2 = r - m;
+    int len1 = m - l + 1;
+    int len2 = r - m + 1;
     Legitymacje left[len1]; 
     Legitymacje right[len2];
 
@@ -57,23 +60,20 @@ void merge(Legitymacje array[], int l, int m, int r)
     int k=0;
 
 
-    while(i < len1 && j<len2)
+    while(i < len1 && j < len2)
     {
-        if(i < len1 && j < len2)
+        if(left[i].l <= right[j].l)
         {
-            if(left[i].w <= right[j].w)
-            {
-                array[k] = left[i];
-                i++;
-            }
+            array[k] = left[i];
+            i++;
         }
         else
         {
             array[k] = right[j];
             j++;
         }
-        k++;
-    }
+    k++;
+}
 
     while(i < len1)
     {
@@ -272,6 +272,7 @@ int main()
     cin>>n>>p>>k>>c;
     Legitymacje Legitymacja[n]; 
     Legitymacje outLegitymacja[n];
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
     if (n >= 1 && n <= 3000000 )
     {
         if(p >= 0 && p <= k && k <= 1000000)
@@ -283,16 +284,26 @@ int main()
                     Legitymacja[i].w =  rand() % (k - p + 1) + p;
                 }
 
-                wypisz(Legitymacja, n, c);
-                cout<<endl<<endl;
-                // Introsort(Legitymacja, 0, n); 
-                // timSort(Legitymacja, n);
-                // wypisz(Legitymacja, n, c);
-                countSort(Legitymacja, n, outLegitymacja);
-                wypisz(outLegitymacja, n, c);
-
+                if(n > 1000 && n <=5000)
+                {
+                    Introsort(Legitymacja, 0, n); 
+                }
+                else if(n>5000)
+                {
+                    countSort(Legitymacja, n, outLegitymacja);
+                }
+                else if (n <= 1000 )
+                {
+                    timSort(Legitymacja, n);
+                }
             }
         }
     }
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    ofstream myfile;
+    myfile.open ("timSort.txt", std::ios::app);
+    myfile << "\n"<< std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count()<< std::endl;
+    myfile.close();
+    std::cout << "\nTime difference = " << std::chrono::duration_cast<std::chrono::nanoseconds> (end - begin).count() << "[ns]" << std::endl;
     return 0;
 }
