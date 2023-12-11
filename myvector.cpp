@@ -61,6 +61,22 @@ public:
         }
         return array[index];
     }
+
+    void print()
+    {
+        for(int i=0;i<current_size;i++)
+        {
+            cout<<array[i]<<" ";
+        }
+    }
+
+    void reverse_print()
+    {
+        for(int i=current_size-1;i>=0;i--)
+        {
+            cout<<array[i]<<" ";
+        }
+    }
 };
 
 
@@ -78,13 +94,14 @@ int main()
             v.push_back(n);
     } while(n!=0);
     
-    for(auto i = v.end()-1; i > v.begin()-1; i--)
-    {
-        cout<<*i<<" ";
-    }
+    v.reverse_print();
     
-    // cout<<"\n";
-    // cout<<v[1];   
+    // for(auto i = v.end()-1; i > v.begin()-1; i--)
+    // {
+    //     cout<<*i<<" ";
+    // }
+    
+    // cout<<v[1];
     // cout<<"\n"<<v.size()<<" / "<<v.capacity();
     
     return 0;
